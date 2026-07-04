@@ -41,7 +41,7 @@ export default function SemesterDetailPage() {
   return (
     <TeacherShell
       crumbs={[
-        { label: 'Tahun Ajaran', to: '/guru' },
+        { label: 'Beranda', to: '/guru' },
         {
           label: info?.academic_year?.label ?? '…',
           to: info?.academic_year ? `/guru/tahun/${info.academic_year.id}` : undefined,

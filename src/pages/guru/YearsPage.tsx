@@ -29,10 +29,12 @@ export default function YearsPage() {
   }, [reload])
 
   return (
-    <TeacherShell crumbs={[{ label: 'Tahun Ajaran' }]}>
+    <TeacherShell
+      crumbs={[{ label: 'Beranda', to: '/guru' }, { label: 'Struktur Tahun Ajaran' }]}
+    >
       <Card
         title="Tahun Ajaran"
-        subtitle="Mulai dari sini: buat tahun ajaran, lalu semester, kelas, dan chapter di dalamnya."
+        subtitle="Buat tahun ajaran, lalu semester dan kelas di dalamnya. Kelas yang sudah ada muncul langsung di Beranda."
       >
         <CrudList
           items={items}

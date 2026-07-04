@@ -1,3 +1,47 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Token warna tema (dipetakan ke Tailwind lewat tailwind.config.js).
+   Format: triplet RGB agar bisa dipakai dengan alpha (rgb(var(--x) / a)). */
+:root {
+  --c-canvas: 238 242 255; /* indigo-50 — latar terang yang hangat */
+  --c-surface: 255 255 255;
+  --c-surface2: 241 245 249; /* slate-100 */
+  --c-line: 226 232 240; /* slate-200 */
+  --c-ink: 30 41 59; /* slate-800 */
+  --c-dim: 100 116 139; /* slate-500 */
+  --c-faint: 148 163 184; /* slate-400 */
+}
+
+.dark {
+  --c-canvas: 15 23 42; /* slate-900 */
+  --c-surface: 30 41 59; /* slate-800 */
+  --c-surface2: 51 65 85; /* slate-700 */
+  --c-line: 51 65 85; /* slate-700 */
+  --c-ink: 241 245 249; /* slate-100 */
+  --c-dim: 148 163 184; /* slate-400 */
+  --c-faint: 100 116 139; /* slate-500 */
+}
+
+@layer base {
+  body {
+    @apply bg-canvas text-ink antialiased;
+  }
+  /* Form control mengikuti tema (kelas eksplisit per-elemen tetap menang). */
+  input,
+  select,
+  textarea {
+    @apply bg-surface text-ink;
+  }
+  ::placeholder {
+    @apply text-faint;
+  }
+}
+
+@layer utilities {
+  /* Teks logo/judul bergaya game. */
+  .text-game {
+    @apply font-extrabold bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-500 bg-clip-text text-transparent;
+  }
+}

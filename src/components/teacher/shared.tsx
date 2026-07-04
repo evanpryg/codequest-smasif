@@ -1,18 +1,19 @@
 import { useState, type FormEvent, type ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../../auth/AuthContext'
+import ThemeToggle from '../ThemeToggle'
 
 /** Gaya bersama halaman guru. */
 export const inputClass =
-  'w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-800 ' +
-  'focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 disabled:bg-slate-100'
+  'w-full rounded-lg border border-line px-3 py-2 text-ink ' +
+  'focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 disabled:bg-surface2'
 
 export const primaryButton =
   'rounded-lg bg-indigo-600 text-white font-semibold px-4 py-2 hover:bg-indigo-700 ' +
   'disabled:opacity-50 disabled:cursor-not-allowed'
 
 export const subtleButton =
-  'rounded-lg border border-slate-300 px-3 py-1.5 text-sm text-slate-600 hover:bg-slate-50'
+  'rounded-lg border border-line px-3 py-1.5 text-sm text-dim hover:bg-surface2'
 
 export const dangerButton =
   'rounded-lg border border-red-200 px-3 py-1.5 text-sm text-red-600 hover:bg-red-50'
@@ -28,19 +29,20 @@ export function TeacherShell({ crumbs, children }: { crumbs: Crumb[]; children: 
   const email = state.status === 'teacher' ? state.session.user.email : ''
 
   return (
-    <main className="min-h-screen bg-slate-100">
-      <header className="bg-white border-b border-slate-200">
-        <div className="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
+    <main className="min-h-screen bg-canvas">
+      <header className="bg-surface border-b border-line">
+        <div className="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <Link to="/guru" className="text-xl font-extrabold text-indigo-700">
-              CodeQuest
+            <Link to="/guru" className="text-2xl text-game">
+              ⚔️ CodeQuest
             </Link>
-            <span className="text-xs font-semibold uppercase tracking-wide bg-indigo-100 text-indigo-700 rounded-full px-2 py-0.5">
+            <span className="text-xs font-bold uppercase tracking-wide bg-indigo-100 text-indigo-700 rounded-full px-2.5 py-1">
               Guru
             </span>
           </div>
           <div className="flex items-center gap-3 text-sm">
-            <span className="text-slate-500 hidden sm:inline">{email}</span>
+            <span className="text-dim hidden sm:inline">{email}</span>
+            <ThemeToggle />
             <button onClick={logout} className={subtleButton}>
               Keluar
             </button>
@@ -48,17 +50,17 @@ export function TeacherShell({ crumbs, children }: { crumbs: Crumb[]; children: 
         </div>
       </header>
 
-      <div className="max-w-5xl mx-auto px-4 py-6 space-y-6">
-        <nav className="text-sm text-slate-500 flex items-center gap-1 flex-wrap">
+      <div className="max-w-7xl mx-auto px-6 py-6 space-y-6">
+        <nav className="text-sm text-dim flex items-center gap-1 flex-wrap">
           {crumbs.map((c, i) => (
             <span key={i} className="flex items-center gap-1">
-              {i > 0 && <span className="text-slate-300">/</span>}
+              {i > 0 && <span className="text-faint">/</span>}
               {c.to ? (
                 <Link to={c.to} className="hover:text-indigo-600 hover:underline">
                   {c.label}
                 </Link>
               ) : (
-                <span className="font-semibold text-slate-700">{c.label}</span>
+                <span className="font-semibold text-ink">{c.label}</span>
               )}
             </span>
           ))}
@@ -71,9 +73,9 @@ export function TeacherShell({ crumbs, children }: { crumbs: Crumb[]; children: 
 
 export function Card({ title, subtitle, children }: { title: string; subtitle?: string; children: ReactNode }) {
   return (
-    <section className="bg-white rounded-2xl shadow-sm p-6">
-      <h2 className="text-lg font-bold text-slate-800">{title}</h2>
-      {subtitle && <p className="text-sm text-slate-500 mt-0.5 mb-4">{subtitle}</p>}
+    <section className="bg-surface rounded-2xl shadow-sm p-6">
+      <h2 className="text-lg font-bold text-ink">{title}</h2>
+      {subtitle && <p className="text-sm text-dim mt-0.5 mb-4">{subtitle}</p>}
       {!subtitle && <div className="mb-4" />}
       {children}
     </section>
@@ -145,16 +147,16 @@ export function CrudList({
 
   return (
     <div className="space-y-3">
-      {items === null && <p className="text-sm text-slate-400">Memuat…</p>}
+      {items === null && <p className="text-sm text-faint">Memuat…</p>}
       {items !== null && items.length === 0 && (
-        <p className="text-sm text-slate-400">{emptyText}</p>
+        <p className="text-sm text-faint">{emptyText}</p>
       )}
 
       <ul className="space-y-2">
         {items?.map((item) => (
           <li
             key={item.id}
-            className="rounded-lg border border-slate-200 px-4 py-3 flex items-center gap-3"
+            className="rounded-lg border border-line px-4 py-3 flex items-center gap-3"
           >
             {editingId === item.id ? (
               <form
@@ -187,18 +189,18 @@ export function CrudList({
                 {item.href ? (
                   <Link
                     to={item.href}
-                    className="flex-1 font-medium text-slate-700 hover:text-indigo-700"
+                    className="flex-1 font-medium text-ink hover:text-indigo-700"
                   >
                     {item.label}
                     {item.badge && (
-                      <span className="ml-2 text-xs font-semibold bg-slate-100 text-slate-500 rounded-full px-2 py-0.5">
+                      <span className="ml-2 text-xs font-semibold bg-surface2 text-dim rounded-full px-2 py-0.5">
                         {item.badge}
                       </span>
                     )}
-                    <span className="text-slate-300 ml-2">›</span>
+                    <span className="text-faint ml-2">›</span>
                   </Link>
                 ) : (
-                  <span className="flex-1 font-medium text-slate-700">{item.label}</span>
+                  <span className="flex-1 font-medium text-ink">{item.label}</span>
                 )}
                 <button
                   className={subtleButton}
@@ -239,7 +241,7 @@ export function CrudList({
       </form>
 
       {quickAdds && quickAdds.some((q) => !existingLabels.has(q.toLowerCase())) && (
-        <div className="flex items-center gap-2 text-sm text-slate-500">
+        <div className="flex items-center gap-2 text-sm text-dim">
           <span>Cepat:</span>
           {quickAdds
             .filter((q) => !existingLabels.has(q.toLowerCase()))

@@ -122,7 +122,7 @@ export default function RecapPage() {
   return (
     <TeacherShell
       crumbs={[
-        { label: 'Tahun Ajaran', to: '/guru' },
+        { label: 'Beranda', to: '/guru' },
         { label: `Kelas ${className}`, to: `/guru/kelas/${classId}` },
         { label: 'Rekap Nilai' },
       ]}
@@ -133,7 +133,7 @@ export default function RecapPage() {
       >
         <div className="mb-4">
           <select
-            className="rounded-lg border border-slate-300 px-3 py-2"
+            className="rounded-lg border border-line px-3 py-2"
             value={chapterId}
             onChange={(e) => setChapterId(e.target.value)}
           >
@@ -148,7 +148,7 @@ export default function RecapPage() {
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="text-left text-slate-500 border-b border-slate-200">
+              <tr className="text-left text-dim border-b border-line">
                 <th className="py-2 pr-3 font-semibold">Siswa</th>
                 <th className="py-2 pr-3 font-semibold">Lv</th>
                 <th className="py-2 pr-3 font-semibold">XP</th>
@@ -162,10 +162,10 @@ export default function RecapPage() {
             </thead>
             <tbody>
               {students.map((s) => (
-                <tr key={s.id} className="border-b border-slate-100">
-                  <td className="py-2 pr-3 font-medium text-slate-700 whitespace-nowrap">{s.name}</td>
-                  <td className="py-2 pr-3 text-slate-500">{s.level}</td>
-                  <td className="py-2 pr-3 text-slate-500">{s.total_xp}</td>
+                <tr key={s.id} className="border-b border-line">
+                  <td className="py-2 pr-3 font-medium text-ink whitespace-nowrap">{s.name}</td>
+                  <td className="py-2 pr-3 text-dim">{s.level}</td>
+                  <td className="py-2 pr-3 text-dim">{s.total_xp}</td>
                   {chapterQuests.map((q) => {
                     const status = statusMap.get(`${s.id}:${q.id}`)
                     const cell = status ? CELL[status] : undefined
@@ -181,7 +181,7 @@ export default function RecapPage() {
                             {score ? ` ${score}` : ''}
                           </span>
                         ) : (
-                          <span className="text-slate-300">·</span>
+                          <span className="text-faint">·</span>
                         )}
                       </td>
                     )
@@ -191,7 +191,7 @@ export default function RecapPage() {
             </tbody>
           </table>
           {students.length === 0 && (
-            <p className="text-sm text-slate-400 py-4">Belum ada siswa di kelas ini.</p>
+            <p className="text-sm text-faint py-4">Belum ada siswa di kelas ini.</p>
           )}
         </div>
       </Card>

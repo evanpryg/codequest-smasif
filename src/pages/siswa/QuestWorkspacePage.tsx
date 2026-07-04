@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { useAuth } from '../../auth/AuthContext'
+import ThemeToggle from '../../components/ThemeToggle'
 import { useTrackPresence } from '../../hooks/useClassPresence'
 import { compareOutput } from '../../lib/autocheck'
 import { awardPassRewards, type PassRewards } from '../../lib/achievements'
@@ -49,7 +50,7 @@ interface CaseResult {
 }
 
 const inputClass =
-  'w-full rounded-lg border border-slate-300 px-3 py-2 ' +
+  'w-full rounded-lg border border-line px-3 py-2 ' +
   'focus:outline-none focus:ring-2 focus:ring-indigo-500'
 
 /**
@@ -329,7 +330,7 @@ export default function QuestWorkspacePage() {
 
   if (!quest) {
     return (
-      <main className="min-h-screen bg-slate-100 flex items-center justify-center text-slate-400">
+      <main className="min-h-screen bg-canvas flex items-center justify-center text-faint">
         Memuat…
       </main>
     )
@@ -339,29 +340,34 @@ export default function QuestWorkspacePage() {
   const isPassed = submission?.status === 'passed'
 
   return (
-    <main className="min-h-screen bg-slate-100">
-      <header className="bg-white border-b border-slate-200">
-        <div className="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
+    <main className="min-h-screen bg-canvas">
+      <header className="bg-surface border-b border-line">
+        <div className="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <Link to="/siswa" className="text-xl font-extrabold text-indigo-700">
-              CodeQuest
+            <Link to="/siswa" className="text-2xl text-game">
+              ⚔️ CodeQuest
             </Link>
-            <span className="text-xs font-semibold uppercase tracking-wide bg-emerald-100 text-emerald-700 rounded-full px-2 py-0.5">
+            <span className="text-xs font-bold uppercase tracking-wide bg-emerald-100 text-emerald-700 rounded-full px-2.5 py-1">
               Siswa
             </span>
           </div>
-          <Link to="/siswa" className="text-sm text-slate-500 hover:text-indigo-600">
-            ← Kembali
-          </Link>
+          <div className="flex items-center gap-3">
+            <ThemeToggle />
+            <Link to="/siswa" className="text-sm text-dim hover:text-indigo-600">
+              ← Kembali
+            </Link>
+          </div>
         </div>
       </header>
 
-      <div className="max-w-5xl mx-auto px-4 py-6 space-y-5">
+      {/* Desktop lebar: soal di kiri, editor di kanan (feedback: full layar). */}
+      <div className="max-w-7xl mx-auto px-6 py-6 grid xl:grid-cols-5 gap-6 items-start">
+        <div className="xl:col-span-2 space-y-5">
         {/* Soal */}
-        <section className="bg-white rounded-2xl shadow-sm p-6">
+        <section className="bg-surface rounded-2xl shadow-sm p-6">
           <div className="flex items-start justify-between gap-3">
             <div>
-              <h1 className="text-xl font-bold text-slate-800">
+              <h1 className="text-xl font-bold text-ink">
                 {quest.title}
                 {quest.is_boss && (
                   <span className="ml-2 text-xs font-bold bg-rose-100 text-rose-700 rounded-full px-2 py-0.5 align-middle">
@@ -369,7 +375,7 @@ export default function QuestWorkspacePage() {
                   </span>
                 )}
               </h1>
-              <p className="text-sm text-slate-500 mt-0.5">
+              <p className="text-sm text-dim mt-0.5">
                 {quest.reward_xp} XP ·{' '}
                 {quest.grading_mode === 'auto' ? 'dinilai otomatis' : 'direview guru'}
                 {isPassed && <span className="text-emerald-600 font-semibold"> · LOLOS ✓</span>}
@@ -390,33 +396,35 @@ export default function QuestWorkspacePage() {
             </button>
           </div>
           {quest.description && (
-            <p className="text-slate-700 mt-4 whitespace-pre-wrap">{quest.description}</p>
+            <p className="text-ink mt-4 whitespace-pre-wrap">{quest.description}</p>
           )}
 
           {visibleCases.length > 0 && (
             <div className="mt-4 grid sm:grid-cols-2 gap-3">
               {visibleCases.map((tc, i) => (
-                <div key={tc.id} className="rounded-lg bg-slate-50 border border-slate-200 p-3 text-sm">
-                  <p className="font-semibold text-slate-600 mb-1">Contoh {i + 1}</p>
-                  <p className="text-slate-500">
-                    Input: <code className="font-mono text-slate-700">{tc.stdin || '(tanpa input)'}</code>
+                <div key={tc.id} className="rounded-lg bg-surface2 border border-line p-3 text-sm">
+                  <p className="font-semibold text-dim mb-1">Contoh {i + 1}</p>
+                  <p className="text-dim">
+                    Input: <code className="font-mono text-ink">{tc.stdin || '(tanpa input)'}</code>
                   </p>
-                  <p className="text-slate-500">
-                    Output: <code className="font-mono text-slate-700">{tc.expected_output}</code>
+                  <p className="text-dim">
+                    Output: <code className="font-mono text-ink">{tc.expected_output}</code>
                   </p>
                 </div>
               ))}
             </div>
           )}
         </section>
+        </div>
 
+        <div className="xl:col-span-3 space-y-5">
         {/* Editor kode */}
-        <section className="bg-white rounded-2xl shadow-sm p-6 space-y-3">
+        <section className="bg-surface rounded-2xl shadow-sm p-6 space-y-3">
           <div className="flex items-center justify-between flex-wrap gap-2">
-            <h2 className="font-bold text-slate-800">Kode kamu</h2>
+            <h2 className="font-bold text-ink">Kode kamu</h2>
             <div className="flex items-center gap-3 text-sm">
-              {savedAt && <span className="text-slate-400">Draft tersimpan {savedAt}</span>}
-              <label className="cursor-pointer rounded-lg border border-slate-300 px-3 py-1.5 text-slate-600 hover:bg-slate-50">
+              {savedAt && <span className="text-faint">Draft tersimpan {savedAt}</span>}
+              <label className="cursor-pointer rounded-lg border border-line px-3 py-1.5 text-dim hover:bg-surface2">
                 Upload .py
                 <input
                   type="file"
@@ -440,13 +448,13 @@ export default function QuestWorkspacePage() {
           />
 
           {/* Jalankan sendiri */}
-          <div className="rounded-xl bg-slate-50 border border-slate-200 p-4 space-y-2">
-            <p className="text-sm font-semibold text-slate-600">
+          <div className="rounded-xl bg-surface2 border border-line p-4 space-y-2">
+            <p className="text-sm font-semibold text-dim">
               Coba jalankan dulu (tidak dinilai)
             </p>
             <div className="grid sm:grid-cols-2 gap-3">
               <div>
-                <label className="block text-xs text-slate-500 mb-1">
+                <label className="block text-xs text-dim mb-1">
                   Input percobaan (satu nilai per baris)
                 </label>
                 <textarea
@@ -457,7 +465,7 @@ export default function QuestWorkspacePage() {
                 />
               </div>
               <div>
-                <label className="block text-xs text-slate-500 mb-1">Output</label>
+                <label className="block text-xs text-dim mb-1">Output</label>
                 <pre className="h-20 overflow-auto rounded-lg bg-slate-900 text-slate-100 text-sm p-3 font-mono">
                   {running
                     ? 'Menjalankan… (pemuatan pertama Python bisa ±10-30 detik)'
@@ -495,8 +503,8 @@ export default function QuestWorkspacePage() {
 
         {/* Hasil auto check */}
         {caseResults && (
-          <section className="bg-white rounded-2xl shadow-sm p-6 space-y-3">
-            <h2 className="font-bold text-slate-800">
+          <section className="bg-surface rounded-2xl shadow-sm p-6 space-y-3">
+            <h2 className="font-bold text-ink">
               Hasil pemeriksaan:{' '}
               {caseResults.every((r) => r.passed) ? (
                 <span className="text-emerald-600">LOLOS SEMUA ✓</span>
@@ -546,12 +554,12 @@ export default function QuestWorkspacePage() {
 
         {/* Riwayat percobaan */}
         {attempts.length > 0 && (
-          <section className="bg-white rounded-2xl shadow-sm p-6">
-            <h2 className="font-bold text-slate-800 mb-3">Riwayat percobaan ({attempts.length})</h2>
+          <section className="bg-surface rounded-2xl shadow-sm p-6">
+            <h2 className="font-bold text-ink mb-3">Riwayat percobaan ({attempts.length})</h2>
             <ul className="space-y-1 text-sm">
               {attempts.map((a, i) => (
-                <li key={a.id} className="flex items-center gap-2 text-slate-600">
-                  <span className="text-slate-400">#{attempts.length - i}</span>
+                <li key={a.id} className="flex items-center gap-2 text-dim">
+                  <span className="text-faint">#{attempts.length - i}</span>
                   <span>
                     {new Date(a.created_at).toLocaleString('id-ID', {
                       day: '2-digit',
@@ -568,6 +576,7 @@ export default function QuestWorkspacePage() {
             </ul>
           </section>
         )}
+        </div>
       </div>
     </main>
   )

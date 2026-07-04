@@ -9,6 +9,7 @@ import PresentationPage from './pages/guru/PresentationPage'
 import QuestEditPage from './pages/guru/QuestEditPage'
 import RecapPage from './pages/guru/RecapPage'
 import SemesterDetailPage from './pages/guru/SemesterDetailPage'
+import TeacherDashboard from './pages/guru/TeacherDashboard'
 import YearDetailPage from './pages/guru/YearDetailPage'
 import YearsPage from './pages/guru/YearsPage'
 import ChangePasswordPage from './pages/siswa/ChangePasswordPage'
@@ -31,7 +32,8 @@ export default function App() {
       <Route path="/login" element={<LoginPage />} />
 
       <Route element={<RequireTeacher />}>
-        <Route path="/guru" element={<YearsPage />} />
+        <Route path="/guru" element={<TeacherDashboard />} />
+        <Route path="/guru/struktur" element={<YearsPage />} />
         <Route path="/guru/tahun/:yearId" element={<YearDetailPage />} />
         <Route path="/guru/semester/:semesterId" element={<SemesterDetailPage />} />
         <Route path="/guru/kelas/:classId" element={<ClassDetailPage />} />

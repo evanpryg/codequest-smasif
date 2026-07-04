@@ -4,7 +4,7 @@ import { useAuth } from '../auth/AuthContext'
 /** Layar tunggu singkat saat sesi sedang dipulihkan dari penyimpanan. */
 function LoadingScreen() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-50 text-slate-400">
+    <div className="min-h-screen flex items-center justify-center bg-surface2 text-faint">
       Memuat…
     </div>
   )

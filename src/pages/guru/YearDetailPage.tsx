@@ -31,7 +31,7 @@ export default function YearDetailPage() {
 
   return (
     <TeacherShell
-      crumbs={[{ label: 'Tahun Ajaran', to: '/guru' }, { label: yearLabel || '…' }]}
+      crumbs={[{ label: 'Beranda', to: '/guru' }, { label: yearLabel || '…' }]}
     >
       <Card title={`Semester — ${yearLabel}`} subtitle="Biasanya Ganjil dan Genap.">
         <CrudList

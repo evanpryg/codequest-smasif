@@ -138,7 +138,7 @@ export default function QuestEditPage() {
   return (
     <TeacherShell
       crumbs={[
-        { label: 'Tahun Ajaran', to: '/guru' },
+        { label: 'Beranda', to: '/guru' },
         {
           label: chapter?.class ? `Kelas ${chapter.class.name}` : '…',
           to: chapter?.class ? `/guru/kelas/${chapter.class.id}` : undefined,
@@ -150,12 +150,12 @@ export default function QuestEditPage() {
       <Card title="Pengaturan Quest">
         <form onSubmit={saveQuest} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-slate-600 mb-1">Judul</label>
+            <label className="block text-sm font-medium text-dim mb-1">Judul</label>
             <input className={inputClass} value={title} onChange={(e) => setTitle(e.target.value)} required />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-600 mb-1">Soal / instruksi</label>
+            <label className="block text-sm font-medium text-dim mb-1">Soal / instruksi</label>
             <textarea
               className={inputClass + ' h-36'}
               value={description}
@@ -166,7 +166,7 @@ export default function QuestEditPage() {
 
           <div className="grid sm:grid-cols-3 gap-4">
             <div>
-              <label className="block text-sm font-medium text-slate-600 mb-1">Reward XP</label>
+              <label className="block text-sm font-medium text-dim mb-1">Reward XP</label>
               <input
                 type="number"
                 min={0}
@@ -174,10 +174,10 @@ export default function QuestEditPage() {
                 value={rewardXp}
                 onChange={(e) => setRewardXp(Number(e.target.value))}
               />
-              <p className="text-xs text-slate-400 mt-1">Default: kecil 25, boss 100</p>
+              <p className="text-xs text-faint mt-1">Default: kecil 25, boss 100</p>
             </div>
             <div>
-              <label className="block text-sm font-medium text-slate-600 mb-1">Urutan</label>
+              <label className="block text-sm font-medium text-dim mb-1">Urutan</label>
               <input
                 type="number"
                 min={1}
@@ -187,7 +187,7 @@ export default function QuestEditPage() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-slate-600 mb-1">Cara penilaian</label>
+              <label className="block text-sm font-medium text-dim mb-1">Cara penilaian</label>
               <select
                 className={inputClass}
                 value={gradingMode}
@@ -199,15 +199,15 @@ export default function QuestEditPage() {
             </div>
           </div>
 
-          <label className="flex items-center gap-2 text-sm text-slate-700">
+          <label className="flex items-center gap-2 text-sm text-ink">
             <input type="checkbox" checked={isBoss} onChange={(e) => setIsBoss(e.target.checked)} />
             Boss Quest (latihan besar — lebih menantang, reward lebih besar)
           </label>
 
           {gradingMode === 'auto' && (
-            <div className="rounded-xl bg-slate-50 border border-slate-200 p-4 space-y-3">
-              <p className="text-sm font-semibold text-slate-600">Pengaturan auto check</p>
-              <label className="flex items-center gap-2 text-sm text-slate-700">
+            <div className="rounded-xl bg-surface2 border border-line p-4 space-y-3">
+              <p className="text-sm font-semibold text-dim">Pengaturan auto check</p>
+              <label className="flex items-center gap-2 text-sm text-ink">
                 <input
                   type="checkbox"
                   checked={ignoreOrder}
@@ -215,7 +215,7 @@ export default function QuestEditPage() {
                 />
                 Abaikan urutan baris output (untuk soal berurutan bebas)
               </label>
-              <div className="flex items-center gap-2 text-sm text-slate-700">
+              <div className="flex items-center gap-2 text-sm text-ink">
                 <span>Toleransi angka desimal:</span>
                 <input
                   type="number"
@@ -262,12 +262,12 @@ function RubricEditor({
   onChange: (r: RubricItem[]) => void
 }) {
   return (
-    <div className="rounded-xl bg-slate-50 border border-slate-200 p-4 space-y-3">
-      <p className="text-sm font-semibold text-slate-600">
-        Rubrik penilaian <span className="font-normal text-slate-400">(contoh: Kebenaran logika, maks 4)</span>
+    <div className="rounded-xl bg-surface2 border border-line p-4 space-y-3">
+      <p className="text-sm font-semibold text-dim">
+        Rubrik penilaian <span className="font-normal text-faint">(contoh: Kebenaran logika, maks 4)</span>
       </p>
       {rubric.length === 0 && (
-        <p className="text-sm text-slate-400">Belum ada kriteria.</p>
+        <p className="text-sm text-faint">Belum ada kriteria.</p>
       )}
       {rubric.map((item, i) => (
         <div key={i} className="flex items-center gap-2">
@@ -281,7 +281,7 @@ function RubricEditor({
               onChange(next)
             }}
           />
-          <span className="text-sm text-slate-500 whitespace-nowrap">maks</span>
+          <span className="text-sm text-dim whitespace-nowrap">maks</span>
           <input
             type="number"
             min={1}
@@ -309,7 +309,7 @@ function RubricEditor({
       >
         + Kriteria
       </button>
-      <p className="text-xs text-slate-400">
+      <p className="text-xs text-faint">
         Kriteria umum: kebenaran logika, gaya penulisan kode. Disimpan bersama tombol
         "Simpan quest".
       </p>
@@ -361,7 +361,7 @@ function TestCaseSection({
       title={`Test Case${testCases ? ` (${testCases.length})` : ''}`}
       subtitle='Input diberikan ke program lewat input(); output dibandingkan dengan "Output yang diharapkan". Centang "tersembunyi" agar tidak ditampilkan ke siswa.'
     >
-      {testCases === null && <p className="text-sm text-slate-400">Memuat…</p>}
+      {testCases === null && <p className="text-sm text-faint">Memuat…</p>}
       {testCases !== null && testCases.length === 0 && (
         <p className="text-sm text-amber-600 bg-amber-50 rounded-lg px-3 py-2 mb-3">
           Quest auto check butuh minimal 1 test case agar bisa dinilai.
@@ -408,11 +408,11 @@ function TestCaseEditor({
     stdin !== testCase.stdin || expected !== testCase.expected_output || hidden !== testCase.is_hidden
 
   return (
-    <div className="rounded-xl border border-slate-200 p-4 space-y-3">
+    <div className="rounded-xl border border-line p-4 space-y-3">
       <div className="flex items-center justify-between">
-        <p className="text-sm font-semibold text-slate-600">Test case #{index}</p>
+        <p className="text-sm font-semibold text-dim">Test case #{index}</p>
         <div className="flex items-center gap-2">
-          <label className="flex items-center gap-1.5 text-sm text-slate-600">
+          <label className="flex items-center gap-1.5 text-sm text-dim">
             <input type="checkbox" checked={hidden} onChange={(e) => setHidden(e.target.checked)} />
             tersembunyi
           </label>
@@ -423,7 +423,7 @@ function TestCaseEditor({
       </div>
       <div className="grid sm:grid-cols-2 gap-3">
         <div>
-          <label className="block text-xs font-medium text-slate-500 mb-1">
+          <label className="block text-xs font-medium text-dim mb-1">
             Input (stdin) — satu nilai per baris
           </label>
           <textarea
@@ -434,7 +434,7 @@ function TestCaseEditor({
           />
         </div>
         <div>
-          <label className="block text-xs font-medium text-slate-500 mb-1">
+          <label className="block text-xs font-medium text-dim mb-1">
             Output yang diharapkan
           </label>
           <textarea

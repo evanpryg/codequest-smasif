@@ -121,7 +121,7 @@ export default function ChapterDetailPage() {
   return (
     <TeacherShell
       crumbs={[
-        { label: 'Tahun Ajaran', to: '/guru' },
+        { label: 'Beranda', to: '/guru' },
         {
           label: cls?.semester?.academic_year?.label ?? '…',
           to: cls?.semester?.academic_year ? `/guru/tahun/${cls.semester.academic_year.id}` : undefined,
@@ -137,11 +137,11 @@ export default function ChapterDetailPage() {
       <Card title="Chapter" subtitle="Judul dan materi/pengantar yang dibaca siswa.">
         <form onSubmit={saveChapter} className="space-y-3">
           <div>
-            <label className="block text-sm font-medium text-slate-600 mb-1">Judul</label>
+            <label className="block text-sm font-medium text-dim mb-1">Judul</label>
             <input className={inputClass} value={title} onChange={(e) => setTitle(e.target.value)} required />
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-600 mb-1">
+            <label className="block text-sm font-medium text-dim mb-1">
               Materi / pengantar (opsional)
             </label>
             <textarea
@@ -161,25 +161,25 @@ export default function ChapterDetailPage() {
       </Card>
 
       <Card title="Quest" subtitle="Klik quest untuk mengedit soal, XP, test case, dan rubrik.">
-        {quests === null && <p className="text-sm text-slate-400">Memuat…</p>}
+        {quests === null && <p className="text-sm text-faint">Memuat…</p>}
         <ul className="space-y-2">
           {quests?.map((q) => (
             <li
               key={q.id}
-              className="rounded-lg border border-slate-200 px-4 py-3 flex items-center gap-3"
+              className="rounded-lg border border-line px-4 py-3 flex items-center gap-3"
             >
               <Link
                 to={`/guru/quest/${q.id}`}
-                className="flex-1 font-medium text-slate-700 hover:text-indigo-700"
+                className="flex-1 font-medium text-ink hover:text-indigo-700"
               >
-                <span className="text-slate-400 mr-2">{q.order_index}.</span>
+                <span className="text-faint mr-2">{q.order_index}.</span>
                 {q.title}
                 {q.is_boss && (
                   <span className="ml-2 text-xs font-bold bg-rose-100 text-rose-700 rounded-full px-2 py-0.5">
                     BOSS
                   </span>
                 )}
-                <span className="ml-2 text-xs font-semibold bg-slate-100 text-slate-500 rounded-full px-2 py-0.5">
+                <span className="ml-2 text-xs font-semibold bg-surface2 text-dim rounded-full px-2 py-0.5">
                   {q.grading_mode === 'auto' ? 'auto check' : 'review guru'}
                 </span>
                 <span className="ml-2 text-xs font-semibold bg-indigo-50 text-indigo-600 rounded-full px-2 py-0.5">

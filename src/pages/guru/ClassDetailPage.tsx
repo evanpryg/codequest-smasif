@@ -88,7 +88,7 @@ export default function ClassDetailPage() {
   return (
     <TeacherShell
       crumbs={[
-        { label: 'Tahun Ajaran', to: '/guru' },
+        { label: 'Beranda', to: '/guru' },
         {
           label: info?.semester?.academic_year?.label ?? '…',
           to: info?.semester?.academic_year
@@ -114,10 +114,10 @@ export default function ClassDetailPage() {
         </Link>
         <Link
           to={`/guru/kelas/${classId}/rekap`}
-          className="flex-1 min-w-48 rounded-2xl bg-white shadow-sm p-5 border border-slate-200 hover:border-indigo-300"
+          className="flex-1 min-w-48 rounded-2xl bg-surface shadow-sm p-5 border border-line hover:border-indigo-300"
         >
-          <p className="text-lg font-bold text-slate-700">📊 Rekap Nilai</p>
-          <p className="text-sm text-slate-500">Status & skor semua siswa per chapter</p>
+          <p className="text-lg font-bold text-ink">📊 Rekap Nilai</p>
+          <p className="text-sm text-dim">Status & skor semua siswa per chapter</p>
         </Link>
       </section>
 
@@ -330,21 +330,21 @@ function StudentSection({
       {/* Sumber impor */}
       {pendingNames === null && (
         <div className="grid sm:grid-cols-2 gap-4 mb-6">
-          <div className="rounded-xl border border-dashed border-slate-300 p-4">
-            <p className="text-sm font-semibold text-slate-600 mb-2">Dari file Excel/CSV</p>
+          <div className="rounded-xl border border-dashed border-line p-4">
+            <p className="text-sm font-semibold text-dim mb-2">Dari file Excel/CSV</p>
             <input
               ref={fileRef}
               type="file"
               accept=".xlsx,.xls,.csv"
-              className="text-sm text-slate-500 file:mr-3 file:rounded-lg file:border-0 file:bg-indigo-600 file:text-white file:px-3 file:py-1.5 file:font-semibold hover:file:bg-indigo-700"
+              className="text-sm text-dim file:mr-3 file:rounded-lg file:border-0 file:bg-indigo-600 file:text-white file:px-3 file:py-1.5 file:font-semibold hover:file:bg-indigo-700"
               onChange={(e) => {
                 const f = e.target.files?.[0]
                 if (f) onFileChosen(f)
               }}
             />
           </div>
-          <div className="rounded-xl border border-dashed border-slate-300 p-4">
-            <p className="text-sm font-semibold text-slate-600 mb-2">Atau tempel daftar nama (satu per baris)</p>
+          <div className="rounded-xl border border-dashed border-line p-4">
+            <p className="text-sm font-semibold text-dim mb-2">Atau tempel daftar nama (satu per baris)</p>
             <textarea
               className={inputClass + ' h-20 text-sm'}
               placeholder={'Budi Santoso\nSiti Aminah\n…'}
@@ -365,14 +365,14 @@ function StudentSection({
       {error && <p className="text-sm text-red-600 bg-red-50 rounded-lg px-3 py-2 mb-4">{error}</p>}
 
       {/* Roster */}
-      {students === null && <p className="text-sm text-slate-400">Memuat…</p>}
+      {students === null && <p className="text-sm text-faint">Memuat…</p>}
       {students !== null && students.length === 0 && (
-        <p className="text-sm text-slate-400">Belum ada siswa di kelas ini.</p>
+        <p className="text-sm text-faint">Belum ada siswa di kelas ini.</p>
       )}
       {students !== null && students.length > 0 && (
         <table className="w-full text-sm">
           <thead>
-            <tr className="text-left text-slate-500 border-b border-slate-200">
+            <tr className="text-left text-dim border-b border-line">
               <th className="py-2 font-semibold">Nama</th>
               <th className="py-2 font-semibold">Level</th>
               <th className="py-2 font-semibold">XP</th>
@@ -382,10 +382,10 @@ function StudentSection({
           </thead>
           <tbody>
             {students.map((s) => (
-              <tr key={s.id} className="border-b border-slate-100">
-                <td className="py-2 font-medium text-slate-700">{s.name}</td>
-                <td className="py-2 text-slate-600">{s.level}</td>
-                <td className="py-2 text-slate-600">{s.total_xp}</td>
+              <tr key={s.id} className="border-b border-line">
+                <td className="py-2 font-medium text-ink">{s.name}</td>
+                <td className="py-2 text-dim">{s.level}</td>
+                <td className="py-2 text-dim">{s.total_xp}</td>
                 <td className="py-2">
                   {s.must_change_password ? (
                     <span className="text-xs font-semibold bg-amber-100 text-amber-700 rounded-full px-2 py-0.5">

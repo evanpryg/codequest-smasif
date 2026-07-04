@@ -31,7 +31,7 @@ interface SubRow {
 }
 
 const STATUS_LABEL: Record<string, { text: string; cls: string }> = {
-  not_started: { text: 'belum mulai', cls: 'bg-slate-100 text-slate-500' },
+  not_started: { text: 'belum mulai', cls: 'bg-surface2 text-dim' },
   in_progress: { text: 'mengerjakan', cls: 'bg-sky-100 text-sky-700' },
   submitted: { text: 'submit', cls: 'bg-indigo-100 text-indigo-700' },
   waiting_review: { text: 'menunggu review', cls: 'bg-amber-100 text-amber-700' },
@@ -61,6 +61,11 @@ export default function LiveClassPage() {
   const pickTimer = useRef<number | undefined>(undefined)
 
   const online = useOnlineStudents(dataClient, classId ?? null)
+
+  // Ingat kelas ini agar Beranda menampilkan tombol "Lanjutkan mengajar".
+  useEffect(() => {
+    if (classId) localStorage.setItem('codequest_last_class_id', classId)
+  }, [classId])
 
   // --- Muat kerangka kelas sekali ---
   useEffect(() => {
@@ -181,15 +186,15 @@ export default function LiveClassPage() {
   return (
     <TeacherShell
       crumbs={[
-        { label: 'Tahun Ajaran', to: '/guru' },
+        { label: 'Beranda', to: '/guru' },
         { label: `Kelas ${className}`, to: `/guru/kelas/${classId}` },
         { label: 'Live' },
       ]}
     >
       {/* Pilihan pertemuan & quest */}
-      <section className="bg-white rounded-2xl shadow-sm p-4 flex flex-wrap items-center gap-3">
+      <section className="bg-surface rounded-2xl shadow-sm p-4 flex flex-wrap items-center gap-3">
         <select
-          className="rounded-lg border border-slate-300 px-3 py-2"
+          className="rounded-lg border border-line px-3 py-2"
           value={chapterId}
           onChange={(e) => setChapterId(e.target.value)}
         >
@@ -207,7 +212,7 @@ export default function LiveClassPage() {
               className={
                 q.id === questId
                   ? 'rounded-full bg-indigo-600 text-white text-sm font-semibold px-4 py-1.5'
-                  : 'rounded-full border border-slate-300 text-slate-600 text-sm px-4 py-1.5 hover:bg-slate-50'
+                  : 'rounded-full border border-line text-dim text-sm px-4 py-1.5 hover:bg-surface2'
               }
             >
               {q.title}
@@ -240,7 +245,7 @@ export default function LiveClassPage() {
           <p className="text-4xl font-extrabold mt-1">{picked.name}</p>
           {!picking && selectedQuest && (
             <button
-              className="mt-4 rounded-lg bg-white/20 hover:bg-white/30 font-semibold px-4 py-2"
+              className="mt-4 rounded-lg bg-surface/20 hover:bg-surface/30 font-semibold px-4 py-2"
               onClick={() => navigate(`/guru/presentasi/${selectedQuest.id}/${picked.id}`)}
             >
               Buka Presentation Mode →
@@ -255,12 +260,12 @@ export default function LiveClassPage() {
           { label: 'Online', value: counts.online, cls: 'text-emerald-600' },
           { label: 'Mengerjakan', value: counts.mengerjakan, cls: 'text-sky-600' },
           { label: 'Sudah submit', value: counts.submit, cls: 'text-indigo-600' },
-          { label: 'Belum mulai', value: counts.belum, cls: 'text-slate-500' },
+          { label: 'Belum mulai', value: counts.belum, cls: 'text-dim' },
           { label: '🙋 Butuh bantuan', value: counts.bantuan, cls: 'text-amber-600' },
         ].map((c) => (
-          <div key={c.label} className="bg-white rounded-xl shadow-sm p-4 text-center">
+          <div key={c.label} className="bg-surface rounded-xl shadow-sm p-4 text-center">
             <p className={`text-3xl font-extrabold ${c.cls}`}>{c.value}</p>
-            <p className="text-xs text-slate-500 mt-1">{c.label}</p>
+            <p className="text-xs text-dim mt-1">{c.label}</p>
           </div>
         ))}
       </section>
@@ -277,7 +282,7 @@ export default function LiveClassPage() {
               key={s.id}
               to={selectedQuest ? `/guru/presentasi/${selectedQuest.id}/${s.id}` : '#'}
               className={
-                'rounded-xl bg-white shadow-sm p-4 border-2 transition hover:border-indigo-300 ' +
+                'rounded-xl bg-surface shadow-sm p-4 border-2 transition hover:border-indigo-300 ' +
                 (needHelp ? 'border-amber-400 ring-2 ring-amber-200' : 'border-transparent')
               }
             >
@@ -288,7 +293,7 @@ export default function LiveClassPage() {
                   }
                   title={online.has(s.id) ? 'online' : 'offline'}
                 />
-                <span className="font-semibold text-slate-700 flex-1 truncate">{s.name}</span>
+                <span className="font-semibold text-ink flex-1 truncate">{s.name}</span>
                 {needHelp && <span title="butuh bantuan">🙋</span>}
               </div>
               <span
@@ -300,7 +305,7 @@ export default function LiveClassPage() {
           )
         })}
         {students.length === 0 && (
-          <p className="text-sm text-slate-400 bg-white rounded-xl p-6 sm:col-span-3">
+          <p className="text-sm text-faint bg-surface rounded-xl p-6 sm:col-span-3">
             Belum ada siswa di kelas ini.{' '}
             <Link to={`/guru/kelas/${classId}`} className="text-indigo-600 underline">
               Impor siswa dulu
@@ -310,7 +315,7 @@ export default function LiveClassPage() {
         )}
       </section>
 
-      <p className="text-xs text-slate-400">
+      <p className="text-xs text-faint">
         Status diperbarui otomatis (Realtime + penyegaran berkala).{' '}
         <button className={subtleButton + ' !py-0.5 !px-2 text-xs'} onClick={loadSubs}>
           Segarkan sekarang

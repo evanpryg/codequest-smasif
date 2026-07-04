@@ -46,15 +46,15 @@ export default function ChangePasswordPage() {
   }
 
   const inputClass =
-    'w-full rounded-lg border border-slate-300 px-3 py-2 ' +
+    'w-full rounded-lg border border-line px-3 py-2 ' +
     'focus:outline-none focus:ring-2 focus:ring-indigo-500'
 
   return (
-    <main className="min-h-screen bg-slate-100 flex items-center justify-center p-4">
-      <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-6 space-y-4">
+    <main className="min-h-screen bg-canvas flex items-center justify-center p-4">
+      <div className="w-full max-w-md bg-surface rounded-2xl shadow-lg p-6 space-y-4">
         <div>
-          <h1 className="text-xl font-bold text-slate-800">Buat Password Baru</h1>
-          <p className="text-sm text-slate-500 mt-1">
+          <h1 className="text-xl font-bold text-ink">Buat Password Baru</h1>
+          <p className="text-sm text-dim mt-1">
             Halo, <span className="font-semibold">{student.name}</span>! Demi keamanan, ganti
             password awalmu sebelum melanjutkan.
           </p>
@@ -62,7 +62,7 @@ export default function ChangePasswordPage() {
 
         <form onSubmit={onSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-slate-600 mb-1">
+            <label className="block text-sm font-medium text-dim mb-1">
               Password lama (dari guru)
             </label>
             <input
@@ -74,7 +74,7 @@ export default function ChangePasswordPage() {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-600 mb-1">Password baru</label>
+            <label className="block text-sm font-medium text-dim mb-1">Password baru</label>
             <input
               type="password"
               className={inputClass}
@@ -85,7 +85,7 @@ export default function ChangePasswordPage() {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-600 mb-1">
+            <label className="block text-sm font-medium text-dim mb-1">
               Ulangi password baru
             </label>
             <input

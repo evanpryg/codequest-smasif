@@ -1,6 +1,7 @@
 import { useEffect, useState, type FormEvent } from 'react'
 import { Navigate, useNavigate } from 'react-router-dom'
 import { useAuth } from '../auth/AuthContext'
+import ThemeToggle from '../components/ThemeToggle'
 import {
   fetchClassOptions,
   fetchStudentNames,
@@ -23,20 +24,29 @@ export default function LoginPage() {
   if (state.status === 'student') return <Navigate to="/siswa" replace />
 
   return (
-    <main className="min-h-screen bg-slate-100 flex items-center justify-center p-4">
-      <div className="w-full max-w-md">
+    <main className="relative min-h-screen bg-canvas flex items-center justify-center p-4 overflow-hidden">
+      {/* Latar dekoratif bergaya game */}
+      <div className="pointer-events-none absolute -top-32 -left-32 w-96 h-96 rounded-full bg-indigo-500/20 blur-3xl" />
+      <div className="pointer-events-none absolute -bottom-32 -right-32 w-96 h-96 rounded-full bg-fuchsia-500/20 blur-3xl" />
+      <div className="absolute top-4 right-4">
+        <ThemeToggle />
+      </div>
+
+      <div className="relative w-full max-w-md">
         <div className="text-center mb-6">
-          <h1 className="text-4xl font-extrabold text-indigo-700">CodeQuest</h1>
-          <p className="text-slate-500 mt-1">Pendamping belajar coding di kelas</p>
+          <h1 className="text-5xl text-game">⚔️ CodeQuest</h1>
+          <p className="text-dim mt-2 font-semibold">
+            Pendamping belajar coding di kelas
+          </p>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
+        <div className="bg-surface rounded-3xl shadow-xl border border-line/60 overflow-hidden">
           <div className="grid grid-cols-2 text-center text-sm font-semibold">
             <button
               className={
                 tab === 'siswa'
                   ? 'py-3 bg-indigo-600 text-white'
-                  : 'py-3 bg-slate-50 text-slate-500 hover:bg-slate-100'
+                  : 'py-3 bg-surface2 text-dim hover:bg-surface2'
               }
               onClick={() => setTab('siswa')}
             >
@@ -46,7 +56,7 @@ export default function LoginPage() {
               className={
                 tab === 'guru'
                   ? 'py-3 bg-indigo-600 text-white'
-                  : 'py-3 bg-slate-50 text-slate-500 hover:bg-slate-100'
+                  : 'py-3 bg-surface2 text-dim hover:bg-surface2'
               }
               onClick={() => setTab('guru')}
             >
@@ -66,8 +76,8 @@ function FieldError({ message }: { message: string | null }) {
 }
 
 const inputClass =
-  'w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-800 ' +
-  'focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 disabled:bg-slate-100'
+  'w-full rounded-lg border border-line px-3 py-2 text-ink ' +
+  'focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 disabled:bg-surface2'
 
 const buttonClass =
   'w-full rounded-lg bg-indigo-600 text-white font-semibold py-2.5 ' +
@@ -119,7 +129,7 @@ function StudentForm() {
   return (
     <form onSubmit={onSubmit} className="space-y-4">
       <div>
-        <label className="block text-sm font-medium text-slate-600 mb-1">Kelas</label>
+        <label className="block text-sm font-medium text-dim mb-1">Kelas</label>
         <select
           className={inputClass}
           value={classId}
@@ -138,7 +148,7 @@ function StudentForm() {
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-slate-600 mb-1">Nama</label>
+        <label className="block text-sm font-medium text-dim mb-1">Nama</label>
         <select
           className={inputClass}
           value={name}
@@ -156,7 +166,7 @@ function StudentForm() {
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-slate-600 mb-1">Password</label>
+        <label className="block text-sm font-medium text-dim mb-1">Password</label>
         <input
           type="password"
           className={inputClass}
@@ -202,7 +212,7 @@ function TeacherForm() {
   return (
     <form onSubmit={onSubmit} className="space-y-4">
       <div>
-        <label className="block text-sm font-medium text-slate-600 mb-1">Email</label>
+        <label className="block text-sm font-medium text-dim mb-1">Email</label>
         <input
           type="email"
           className={inputClass}
@@ -214,7 +224,7 @@ function TeacherForm() {
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-slate-600 mb-1">Password</label>
+        <label className="block text-sm font-medium text-dim mb-1">Password</label>
         <input
           type="password"
           className={inputClass}
@@ -231,7 +241,7 @@ function TeacherForm() {
         {busy ? 'Masuk…' : 'Masuk'}
       </button>
 
-      <p className="text-xs text-slate-400 text-center">
+      <p className="text-xs text-faint text-center">
         Akun guru dibuat oleh admin — tidak ada pendaftaran mandiri.
       </p>
     </form>
