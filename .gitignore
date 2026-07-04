@@ -1,0 +1,23 @@
+# dependencies
+node_modules/
+
+# build
+dist/
+dist-ssr/
+*.tsbuildinfo
+
+# env & secrets
+.env
+.env.local
+.env.*.local
+
+# supabase local
+supabase/.branches/
+supabase/.temp/
+
+# editor / os
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+*.log
