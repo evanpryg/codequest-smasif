@@ -11,6 +11,7 @@ interface QuestInfo {
   grading_mode: 'auto' | 'manual'
   is_boss: boolean
   reward_xp: number
+  reward_gold: number
   rubric: { key: string; label: string; max: number }[] | null
 }
 
@@ -59,7 +60,7 @@ export default function PresentationPage() {
     const [{ data: q }, { data: tcs }, { data: st }, { data: sub }] = await Promise.all([
       dataClient
         .from('quest')
-        .select('id, chapter_id, title, grading_mode, is_boss, reward_xp, rubric')
+        .select('id, chapter_id, title, grading_mode, is_boss, reward_xp, reward_gold, rubric')
         .eq('id', questId)
         .single(),
       dataClient
@@ -148,10 +149,12 @@ export default function PresentationPage() {
           chapterId: quest.chapter_id,
           isBoss: quest.is_boss,
           rewardXp: quest.reward_xp,
+          rewardGold: quest.reward_gold,
           attemptCount: attempts.length,
           wasAlreadyPassed,
         })
         if (rewards.xpAwarded > 0) msg += ` · +${rewards.xpAwarded} XP untuk ${studentName}`
+        if (rewards.goldAwarded > 0) msg += ` · +${rewards.goldAwarded} 🪙`
         if (rewards.newAchievements.length > 0)
           msg += ` · 🏅 ${rewards.newAchievements.map((a) => a.name).join(', ')}`
       }

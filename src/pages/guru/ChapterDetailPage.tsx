@@ -99,6 +99,7 @@ export default function ChapterDetailPage() {
       is_boss: isBoss,
       grading_mode: isBoss ? 'manual' : 'auto',
       reward_xp: isBoss ? 100 : 25,
+      reward_gold: isBoss ? 40 : 10,
     })
     if (insertError) setError('Gagal menambah quest')
     await reload()

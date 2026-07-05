@@ -14,6 +14,7 @@ import YearDetailPage from './pages/guru/YearDetailPage'
 import YearsPage from './pages/guru/YearsPage'
 import ChangePasswordPage from './pages/siswa/ChangePasswordPage'
 import QuestWorkspacePage from './pages/siswa/QuestWorkspacePage'
+import ShopPage from './pages/siswa/ShopPage'
 import StudentHome from './pages/siswa/StudentHome'
 
 /** Arahkan root sesuai sesi yang aktif. */
@@ -46,6 +47,7 @@ export default function App() {
 
       <Route element={<RequireStudent />}>
         <Route path="/siswa" element={<StudentHome />} />
+        <Route path="/siswa/toko" element={<ShopPage />} />
         <Route path="/siswa/quest/:questId" element={<QuestWorkspacePage />} />
         <Route path="/siswa/ganti-password" element={<ChangePasswordPage />} />
       </Route>

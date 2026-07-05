@@ -15,6 +15,7 @@ interface QuestDetail {
   is_boss: boolean
   grading_mode: 'auto' | 'manual'
   reward_xp: number
+  reward_gold: number
   ignore_output_order: boolean
   float_tolerance: number
 }
@@ -108,7 +109,7 @@ export default function QuestWorkspacePage() {
         dataClient
           .from('quest')
           .select(
-            'id, chapter_id, title, description, is_boss, grading_mode, reward_xp, ignore_output_order, float_tolerance',
+            'id, chapter_id, title, description, is_boss, grading_mode, reward_xp, reward_gold, ignore_output_order, float_tolerance',
           )
           .eq('id', questId)
           .single(),
@@ -296,6 +297,7 @@ export default function QuestWorkspacePage() {
           chapterId: quest.chapter_id,
           isBoss: quest.is_boss,
           rewardXp: quest.reward_xp,
+          rewardGold: quest.reward_gold,
           attemptCount: attempts.length + 1,
           wasAlreadyPassed,
         })
@@ -538,11 +540,22 @@ export default function QuestWorkspacePage() {
         )}
 
         {/* Reward */}
-        {rewards && (rewards.xpAwarded > 0 || rewards.newAchievements.length > 0) && (
+        {rewards &&
+          (rewards.xpAwarded > 0 ||
+            rewards.goldAwarded > 0 ||
+            rewards.newAchievements.length > 0) && (
           <section className="bg-gradient-to-r from-indigo-600 to-violet-600 text-white rounded-2xl shadow-lg p-6">
             <p className="text-xl font-extrabold">🎉 Quest selesai!</p>
             {rewards.xpAwarded > 0 && (
-              <p className="mt-1 font-semibold">+{rewards.xpAwarded} XP</p>
+              <p className="mt-1 font-semibold">⚡ +{rewards.xpAwarded} XP</p>
+            )}
+            {rewards.goldAwarded > 0 && (
+              <p className="mt-1 font-semibold">
+                🪙 +{rewards.goldAwarded} Gold —{' '}
+                <Link to="/siswa/toko" className="underline">
+                  belanjakan di Toko!
+                </Link>
+              </p>
             )}
             {rewards.newAchievements.map((a) => (
               <p key={a.code} className="mt-1">

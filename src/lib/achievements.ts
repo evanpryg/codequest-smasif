@@ -19,6 +19,8 @@ export interface PassContext {
   chapterId: string
   isBoss: boolean
   rewardXp: number
+  /** Gold saat quest selesai (Fase 2); trigger DB menaikkan student.gold. */
+  rewardGold: number
   /** Jumlah percobaan submit untuk quest ini, TERMASUK yang lolos ini. */
   attemptCount: number
   /** true bila quest ini sudah pernah lolos sebelumnya (tidak ada XP ulang). */
@@ -27,14 +29,17 @@ export interface PassContext {
 
 export interface PassRewards {
   xpAwarded: number
+  goldAwarded: number
   newAchievements: { code: string; name: string }[]
 }
+
+const NO_REWARDS: PassRewards = { xpAwarded: 0, goldAwarded: 0, newAchievements: [] }
 
 export async function awardPassRewards(
   client: SupabaseClient,
   ctx: PassContext,
 ): Promise<PassRewards> {
-  if (ctx.wasAlreadyPassed) return { xpAwarded: 0, newAchievements: [] }
+  if (ctx.wasAlreadyPassed) return NO_REWARDS
 
   // 1. XP — sekali per quest; trigger DB menaikkan total_xp & level.
   const { error: xpError } = await client.from('xp_log').insert({
@@ -44,6 +49,18 @@ export async function awardPassRewards(
     source_quest_id: ctx.questId,
   })
   const xpAwarded = xpError ? 0 : ctx.rewardXp
+
+  // 1b. Gold — pola sama; untuk belanja di Toko (tidak memengaruhi nilai).
+  let goldAwarded = 0
+  if (ctx.rewardGold > 0) {
+    const { error: goldError } = await client.from('gold_log').insert({
+      student_id: ctx.studentId,
+      amount: ctx.rewardGold,
+      reason: 'Quest selesai',
+      source_quest_id: ctx.questId,
+    })
+    goldAwarded = goldError ? 0 : ctx.rewardGold
+  }
 
   // 2. Kumpulkan data untuk syarat achievement. Selalu difilter student_id —
   //    fungsi ini juga dipanggil dari SESI GURU (meluluskan review manual),
@@ -82,7 +99,7 @@ export async function awardPassRewards(
   if (ctx.attemptCount >= 5) codes.push('persistence')
   if (chapterDone && chapterHasBoss) codes.push('full_chapter_boss')
 
-  if (codes.length === 0) return { xpAwarded, newAchievements: [] }
+  if (codes.length === 0) return { xpAwarded, goldAwarded, newAchievements: [] }
 
   // 3. Terjemahkan code -> id, lalu insert yang BELUM dimiliki.
   const [{ data: defs }, { data: owned }] = await Promise.all([
@@ -94,15 +111,16 @@ export async function awardPassRewards(
   ])
   const ownedIds = new Set((owned ?? []).map((o) => o.achievement_id as string))
   const fresh = (defs ?? []).filter((d) => !ownedIds.has(d.id))
-  if (fresh.length === 0) return { xpAwarded, newAchievements: [] }
+  if (fresh.length === 0) return { xpAwarded, goldAwarded, newAchievements: [] }
 
   const { error: insertError } = await client.from('student_achievement').insert(
     fresh.map((d) => ({ student_id: ctx.studentId, achievement_id: d.id })),
   )
-  if (insertError) return { xpAwarded, newAchievements: [] }
+  if (insertError) return { xpAwarded, goldAwarded, newAchievements: [] }
 
   return {
     xpAwarded,
+    goldAwarded,
     newAchievements: fresh.map((d) => ({ code: d.code, name: d.name })),
   }
 }

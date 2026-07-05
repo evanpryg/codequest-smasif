@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../../auth/AuthContext'
+import AvatarView, { type AvatarConfig } from '../../components/AvatarView'
 import ThemeToggle from '../../components/ThemeToggle'
 import { useTrackPresence } from '../../hooks/useClassPresence'
 import { xpProgress } from '../../lib/xp'
@@ -46,9 +47,13 @@ const STATUS_BADGE: Record<QuestStatus, { icon: string; text: string; cls: strin
  */
 export default function StudentHome() {
   const { state, dataClient, logout } = useAuth()
-  const [profile, setProfile] = useState<{ name: string; total_xp: number; level: number } | null>(
-    null,
-  )
+  const [profile, setProfile] = useState<{
+    name: string
+    total_xp: number
+    level: number
+    gold: number
+  } | null>(null)
+  const [avatar, setAvatar] = useState<AvatarConfig>({})
   const [achievements, setAchievements] = useState<EarnedAchievement[] | null>(null)
   const [chapters, setChapters] = useState<ChapterRow[] | null>(null)
   const [quests, setQuests] = useState<QuestRow[]>([])
@@ -65,11 +70,18 @@ export default function StudentHome() {
     if (!studentId) return
     dataClient
       .from('student')
-      .select('name, total_xp, level')
+      .select('name, total_xp, level, gold')
       .eq('id', studentId)
       .single()
       .then(({ data }) => {
         if (data) setProfile(data)
+      })
+    dataClient
+      .from('student_avatar')
+      .select('*')
+      .maybeSingle()
+      .then(({ data }) => {
+        if (data) setAvatar(data as AvatarConfig)
       })
     dataClient
       .from('student_achievement')
@@ -103,7 +115,6 @@ export default function StudentHome() {
   const name = profile?.name ?? state.session.student.name
   const totalXp = profile?.total_xp ?? state.session.student.total_xp
   const progress = xpProgress(totalXp)
-  const initial = name.trim().charAt(0).toUpperCase() || '?'
 
   return (
     <main className="min-h-screen bg-canvas">
@@ -131,12 +142,19 @@ export default function StudentHome() {
         {/* Hero: profil & progres level */}
         <section className="rounded-3xl bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 text-white shadow-lg p-8">
           <div className="flex items-center gap-6 flex-wrap">
-            <div className="w-20 h-20 rounded-2xl bg-white/20 border-2 border-white/40 flex items-center justify-center text-4xl font-extrabold shadow-inner">
-              {initial}
-            </div>
+            <Link to="/siswa/toko" title="Dandani karaktermu di Toko">
+              <AvatarView
+                config={avatar}
+                size={110}
+                className="drop-shadow-xl hover:scale-105 transition"
+              />
+            </Link>
             <div className="flex-1 min-w-52">
               <h1 className="text-3xl font-extrabold">{name}</h1>
-              <p className="text-indigo-200 font-semibold">Total {totalXp} XP</p>
+              <p className="text-indigo-200 font-semibold">
+                ⚡ {totalXp} XP
+                <span className="ml-3">🪙 {profile?.gold ?? 0} Gold</span>
+              </p>
               <div className="mt-3 h-4 rounded-full bg-white/20 overflow-hidden max-w-xl">
                 <div
                   className="h-full rounded-full bg-gradient-to-r from-amber-300 to-yellow-400 transition-all"
@@ -148,13 +166,21 @@ export default function StudentHome() {
                 {progress.level + 1}
               </p>
             </div>
-            <div className="text-center">
+            <div className="flex items-center gap-5">
               <div className="w-24 h-24 rounded-full bg-white/15 border-4 border-amber-300 flex flex-col items-center justify-center shadow-lg">
                 <span className="text-[10px] uppercase tracking-widest text-amber-200 font-bold">
                   Level
                 </span>
                 <span className="text-4xl font-extrabold leading-none">{progress.level}</span>
               </div>
+              <Link
+                to="/siswa/toko"
+                className="rounded-2xl bg-white/15 hover:bg-white/25 border-2 border-white/30 px-5 py-4 text-center font-extrabold transition"
+              >
+                🛍️
+                <br />
+                Toko
+              </Link>
             </div>
           </div>
         </section>

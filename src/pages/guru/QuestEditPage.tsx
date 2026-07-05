@@ -18,6 +18,7 @@ interface QuestDetail {
   is_boss: boolean
   grading_mode: 'auto' | 'manual'
   reward_xp: number
+  reward_gold: number
   ignore_output_order: boolean
   float_tolerance: number
   rubric: RubricItem[] | null
@@ -58,6 +59,7 @@ export default function QuestEditPage() {
   const [isBoss, setIsBoss] = useState(false)
   const [gradingMode, setGradingMode] = useState<'auto' | 'manual'>('auto')
   const [rewardXp, setRewardXp] = useState(25)
+  const [rewardGold, setRewardGold] = useState(10)
   const [orderIndex, setOrderIndex] = useState(1)
   const [ignoreOrder, setIgnoreOrder] = useState(false)
   const [floatTol, setFloatTol] = useState('0.001')
@@ -68,7 +70,7 @@ export default function QuestEditPage() {
       dataClient
         .from('quest')
         .select(
-          'id, title, description, order_index, is_boss, grading_mode, reward_xp, ignore_output_order, float_tolerance, rubric, chapter:chapter_id(id, title, class:class_id(id, name))',
+          'id, title, description, order_index, is_boss, grading_mode, reward_xp, reward_gold, ignore_output_order, float_tolerance, rubric, chapter:chapter_id(id, title, class:class_id(id, name))',
         )
         .eq('id', questId)
         .single(),
@@ -86,6 +88,7 @@ export default function QuestEditPage() {
       setIsBoss(detail.is_boss)
       setGradingMode(detail.grading_mode)
       setRewardXp(detail.reward_xp)
+      setRewardGold(detail.reward_gold)
       setOrderIndex(detail.order_index)
       setIgnoreOrder(detail.ignore_output_order)
       setFloatTol(String(detail.float_tolerance))
@@ -118,6 +121,7 @@ export default function QuestEditPage() {
         is_boss: isBoss,
         grading_mode: gradingMode,
         reward_xp: Math.max(0, Math.floor(rewardXp) || 0),
+        reward_gold: Math.max(0, Math.floor(rewardGold) || 0),
         order_index: Math.max(1, Math.floor(orderIndex) || 1),
         ignore_output_order: ignoreOrder,
         float_tolerance: Number.isFinite(tol) && tol >= 0 ? tol : 0.001,
@@ -164,7 +168,7 @@ export default function QuestEditPage() {
             />
           </div>
 
-          <div className="grid sm:grid-cols-3 gap-4">
+          <div className="grid sm:grid-cols-4 gap-4">
             <div>
               <label className="block text-sm font-medium text-dim mb-1">Reward XP</label>
               <input
@@ -175,6 +179,17 @@ export default function QuestEditPage() {
                 onChange={(e) => setRewardXp(Number(e.target.value))}
               />
               <p className="text-xs text-faint mt-1">Default: kecil 25, boss 100</p>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-dim mb-1">Reward Gold 🪙</label>
+              <input
+                type="number"
+                min={0}
+                className={inputClass}
+                value={rewardGold}
+                onChange={(e) => setRewardGold(Number(e.target.value))}
+              />
+              <p className="text-xs text-faint mt-1">Default: kecil 10, boss 40</p>
             </div>
             <div>
               <label className="block text-sm font-medium text-dim mb-1">Urutan</label>
