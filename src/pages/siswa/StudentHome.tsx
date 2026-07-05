@@ -1,7 +1,24 @@
+import {
+  CheckCircle2,
+  Coins,
+  Crown,
+  Map,
+  Medal,
+  RotateCcw,
+  Send,
+  Shield,
+  ShoppingBag,
+  Star,
+  Swords,
+  Trophy,
+  Zap,
+  type LucideIcon,
+} from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../../auth/AuthContext'
 import AvatarView, { type AvatarConfig } from '../../components/AvatarView'
+import Logo from '../../components/Logo'
 import ThemeToggle from '../../components/ThemeToggle'
 import { useTrackPresence } from '../../hooks/useClassPresence'
 import { xpProgress } from '../../lib/xp'
@@ -31,13 +48,16 @@ interface QuestRow {
 /** Status pengerjaan per quest milik siswa ini (dari submission miliknya). */
 type QuestStatus = 'not_started' | 'in_progress' | 'submitted' | 'waiting_review' | 'passed' | 'failed'
 
-const STATUS_BADGE: Record<QuestStatus, { icon: string; text: string; cls: string }> = {
-  not_started: { icon: '🗺️', text: 'belum mulai', cls: 'bg-surface2 text-dim' },
-  in_progress: { icon: '⚔️', text: 'sedang dikerjakan', cls: 'bg-sky-100 text-sky-700' },
-  submitted: { icon: '📤', text: 'terkumpul', cls: 'bg-indigo-100 text-indigo-700' },
-  waiting_review: { icon: '🛡️', text: 'menunggu review', cls: 'bg-amber-100 text-amber-700' },
-  passed: { icon: '✅', text: 'lolos', cls: 'bg-emerald-100 text-emerald-700' },
-  failed: { icon: '🔁', text: 'coba lagi', cls: 'bg-red-100 text-red-600' },
+const STATUS_BADGE: Record<
+  QuestStatus,
+  { Icon: LucideIcon; iconCls: string; text: string; cls: string }
+> = {
+  not_started: { Icon: Map, iconCls: 'text-faint', text: 'belum mulai', cls: 'bg-surface2 text-dim' },
+  in_progress: { Icon: Swords, iconCls: 'text-sky-500', text: 'sedang dikerjakan', cls: 'bg-sky-100 text-sky-700' },
+  submitted: { Icon: Send, iconCls: 'text-indigo-500', text: 'terkumpul', cls: 'bg-indigo-100 text-indigo-700' },
+  waiting_review: { Icon: Shield, iconCls: 'text-amber-500', text: 'menunggu review', cls: 'bg-amber-100 text-amber-700' },
+  passed: { Icon: CheckCircle2, iconCls: 'text-emerald-500', text: 'lolos', cls: 'bg-emerald-100 text-emerald-700' },
+  failed: { Icon: RotateCcw, iconCls: 'text-red-500', text: 'coba lagi', cls: 'bg-red-100 text-red-600' },
 }
 
 /**
@@ -121,7 +141,7 @@ export default function StudentHome() {
       <header className="bg-surface border-b border-line">
         <div className="max-w-6xl mx-auto px-6 py-3 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <span className="text-2xl text-game">⚔️ CodeQuest</span>
+            <Logo />
             <span className="text-xs font-bold uppercase tracking-wide bg-emerald-100 text-emerald-700 rounded-full px-2.5 py-1">
               Siswa
             </span>
@@ -151,9 +171,13 @@ export default function StudentHome() {
             </Link>
             <div className="flex-1 min-w-52">
               <h1 className="text-3xl font-extrabold">{name}</h1>
-              <p className="text-indigo-200 font-semibold">
-                ⚡ {totalXp} XP
-                <span className="ml-3">🪙 {profile?.gold ?? 0} Gold</span>
+              <p className="text-indigo-200 font-semibold flex items-center gap-4">
+                <span className="inline-flex items-center gap-1.5">
+                  <Zap className="w-4 h-4 text-amber-300 fill-amber-300" /> {totalXp} XP
+                </span>
+                <span className="inline-flex items-center gap-1.5">
+                  <Coins className="w-4 h-4 text-amber-300" /> {profile?.gold ?? 0} Gold
+                </span>
               </p>
               <div className="mt-3 h-4 rounded-full bg-white/20 overflow-hidden max-w-xl">
                 <div
@@ -177,8 +201,7 @@ export default function StudentHome() {
                 to="/siswa/toko"
                 className="rounded-2xl bg-white/15 hover:bg-white/25 border-2 border-white/30 px-5 py-4 text-center font-extrabold transition"
               >
-                🛍️
-                <br />
+                <ShoppingBag className="w-6 h-6 mx-auto mb-1" />
                 Toko
               </Link>
             </div>
@@ -188,7 +211,9 @@ export default function StudentHome() {
         <div className="grid lg:grid-cols-3 gap-6 items-start">
           {/* Peta quest */}
           <section className="lg:col-span-2 space-y-4">
-            <h2 className="text-xl font-extrabold text-ink">Petualanganmu 🗺️</h2>
+            <h2 className="text-xl font-extrabold text-ink flex items-center gap-2">
+              <Map className="w-5 h-5 text-indigo-500" /> Petualanganmu
+            </h2>
             {chapters === null && <p className="text-sm text-faint">Memuat…</p>}
             {chapters !== null && chapters.length === 0 && (
               <p className="text-sm text-faint bg-surface rounded-2xl p-6">
@@ -206,8 +231,9 @@ export default function StudentHome() {
                       <span className="text-faint mr-1">{ch.order_index}.</span>
                       {ch.title}
                     </h3>
-                    <span className="text-xs font-bold text-dim whitespace-nowrap">
-                      {doneCount}/{chQuests.length} ⭐
+                    <span className="text-xs font-bold text-dim whitespace-nowrap inline-flex items-center gap-1">
+                      {doneCount}/{chQuests.length}
+                      <Star className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
                     </span>
                   </div>
                   <div className="h-2 rounded-full bg-line overflow-hidden mb-3">
@@ -234,7 +260,11 @@ export default function StudentHome() {
                                 : 'border-line hover:border-indigo-300')
                             }
                           >
-                            <span className="text-2xl">{q.is_boss ? '👑' : badge.icon}</span>
+                            {q.is_boss ? (
+                              <Crown className="w-6 h-6 text-amber-500 shrink-0" />
+                            ) : (
+                              <badge.Icon className={'w-6 h-6 shrink-0 ' + badge.iconCls} />
+                            )}
                             <span className="flex-1 font-bold text-ink">
                               {q.title}
                               {q.is_boss && (
@@ -263,7 +293,9 @@ export default function StudentHome() {
 
           {/* Achievement — medali */}
           <section className="bg-surface rounded-2xl shadow-sm p-6 border border-line/60">
-            <h2 className="text-xl font-extrabold text-ink mb-4">Achievement 🏆</h2>
+            <h2 className="text-xl font-extrabold text-ink mb-4 flex items-center gap-2">
+              <Trophy className="w-5 h-5 text-amber-500" /> Achievement
+            </h2>
             {achievements === null && <p className="text-sm text-faint">Memuat…</p>}
             {achievements !== null && achievements.length === 0 && (
               <p className="text-sm text-faint">
@@ -276,7 +308,7 @@ export default function StudentHome() {
                   key={a.achievement?.code ?? a.earned_at}
                   className="flex items-center gap-3 rounded-xl border border-amber-300/60 bg-gradient-to-r from-amber-500/10 to-yellow-500/10 px-4 py-3"
                 >
-                  <span className="text-3xl">🏅</span>
+                  <Medal className="w-8 h-8 text-amber-500 shrink-0" />
                   <div>
                     <p className="font-extrabold text-ink">{a.achievement?.name}</p>
                     {a.achievement?.description && (

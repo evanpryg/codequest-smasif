@@ -181,7 +181,7 @@ export default function QuestEditPage() {
               <p className="text-xs text-faint mt-1">Default: kecil 25, boss 100</p>
             </div>
             <div>
-              <label className="block text-sm font-medium text-dim mb-1">Reward Gold 🪙</label>
+              <label className="block text-sm font-medium text-dim mb-1">Reward Gold</label>
               <input
                 type="number"
                 min={0}

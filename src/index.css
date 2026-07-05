@@ -45,3 +45,33 @@
     @apply font-extrabold bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-500 bg-clip-text text-transparent;
   }
 }
+
+/* --- Animasi karakter (AvatarView) — goyang idle & kedip -------------------- */
+@keyframes avatar-bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+@keyframes avatar-blink {
+  0%,
+  91%,
+  97%,
+  100% {
+    transform: scaleY(1);
+  }
+  94% {
+    transform: scaleY(0.08);
+  }
+}
+.avatar-anim .av-char {
+  animation: avatar-bob 3.2s ease-in-out infinite;
+}
+.avatar-anim .av-eyes {
+  animation: avatar-blink 4.6s infinite;
+  transform-origin: center;
+  transform-box: fill-box;
+}

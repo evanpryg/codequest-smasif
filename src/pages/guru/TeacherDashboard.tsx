@@ -1,3 +1,4 @@
+import { BarChart3, BookOpen, GraduationCap, School, Settings, Users } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../../auth/AuthContext'
@@ -70,14 +71,15 @@ export default function TeacherDashboard() {
             to="/guru/struktur"
             className="rounded-lg border border-line px-3 py-1.5 text-sm text-dim hover:bg-surface2"
           >
-            ⚙️ Kelola Tahun Ajaran & Semester
+            <Settings className="w-4 h-4 inline -mt-0.5 mr-1" />
+            Kelola Tahun Ajaran & Semester
           </Link>
         </div>
 
         {classes === null && <p className="text-sm text-faint">Memuat…</p>}
         {classes !== null && classes.length === 0 && (
           <div className="bg-surface rounded-2xl shadow-sm p-8 text-center space-y-2">
-            <p className="text-3xl">🏫</p>
+            <School className="w-10 h-10 mx-auto text-faint" />
             <p className="font-semibold text-ink">Belum ada kelas</p>
             <p className="text-sm text-dim">
               Mulai dari{' '}
@@ -103,8 +105,8 @@ export default function TeacherDashboard() {
                     {c.semester ? ` · ${c.semester.name}` : ''}
                   </p>
                 </div>
-                <span className="text-xs font-bold bg-surface2 text-dim rounded-full px-2.5 py-1">
-                  👥 {studentCounts[c.id] ?? 0}
+                <span className="inline-flex items-center gap-1 text-xs font-bold bg-surface2 text-dim rounded-full px-2.5 py-1">
+                  <Users className="w-3.5 h-3.5" /> {studentCounts[c.id] ?? 0}
                 </span>
               </div>
               <div className="grid grid-cols-3 gap-2 mt-4 text-sm font-semibold text-center">
@@ -112,19 +114,25 @@ export default function TeacherDashboard() {
                   to={`/guru/kelas/${c.id}/live`}
                   className="rounded-xl bg-indigo-600 text-white py-2.5 hover:bg-indigo-500"
                 >
-                  🎓 Mengajar
+                  <span className="inline-flex items-center justify-center gap-1.5">
+                    <GraduationCap className="w-4 h-4" /> Mengajar
+                  </span>
                 </Link>
                 <Link
                   to={`/guru/kelas/${c.id}`}
                   className="rounded-xl border border-line text-dim py-2.5 hover:bg-surface2"
                 >
-                  📚 Kelola
+                  <span className="inline-flex items-center justify-center gap-1.5">
+                    <BookOpen className="w-4 h-4" /> Kelola
+                  </span>
                 </Link>
                 <Link
                   to={`/guru/kelas/${c.id}/rekap`}
                   className="rounded-xl border border-line text-dim py-2.5 hover:bg-surface2"
                 >
-                  📊 Rekap
+                  <span className="inline-flex items-center justify-center gap-1.5">
+                    <BarChart3 className="w-4 h-4" /> Rekap
+                  </span>
                 </Link>
               </div>
             </div>

@@ -1,6 +1,8 @@
+import { Coins, Hand, Medal, PartyPopper, Send, Zap } from 'lucide-react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { useAuth } from '../../auth/AuthContext'
+import Logo from '../../components/Logo'
 import ThemeToggle from '../../components/ThemeToggle'
 import { useTrackPresence } from '../../hooks/useClassPresence'
 import { compareOutput } from '../../lib/autocheck'
@@ -346,9 +348,7 @@ export default function QuestWorkspacePage() {
       <header className="bg-surface border-b border-line">
         <div className="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <Link to="/siswa" className="text-2xl text-game">
-              ⚔️ CodeQuest
-            </Link>
+            <Logo to="/siswa" />
             <span className="text-xs font-bold uppercase tracking-wide bg-emerald-100 text-emerald-700 rounded-full px-2.5 py-1">
               Siswa
             </span>
@@ -394,7 +394,10 @@ export default function QuestWorkspacePage() {
                   : 'rounded-lg border border-amber-300 text-amber-600 text-sm font-semibold px-3 py-2 hover:bg-amber-50'
               }
             >
-              {submission?.help_requested ? '🙋 Menunggu guru…' : '🙋 Butuh Bantuan'}
+              <span className="inline-flex items-center gap-1.5">
+                <Hand className="w-4 h-4" />
+                {submission?.help_requested ? 'Menunggu guru…' : 'Butuh Bantuan'}
+              </span>
             </button>
           </div>
           {quest.description && (
@@ -493,13 +496,14 @@ export default function QuestWorkspacePage() {
           <button
             onClick={submit}
             disabled={submitting || !code.trim()}
-            className="w-full rounded-lg bg-indigo-600 text-white font-bold py-3 hover:bg-indigo-700 disabled:opacity-50"
+            className="w-full rounded-lg bg-indigo-600 text-white font-bold py-3 hover:bg-indigo-700 disabled:opacity-50 flex items-center justify-center gap-2"
           >
+            <Send className="w-5 h-5" />
             {submitting
               ? 'Memeriksa…'
               : quest.grading_mode === 'auto'
-                ? '📤 Kumpulkan & Periksa Otomatis'
-                : '📤 Kumpulkan untuk Direview Guru'}
+                ? 'Kumpulkan & Periksa Otomatis'
+                : 'Kumpulkan untuk Direview Guru'}
           </button>
         </section>
 
@@ -545,21 +549,26 @@ export default function QuestWorkspacePage() {
             rewards.goldAwarded > 0 ||
             rewards.newAchievements.length > 0) && (
           <section className="bg-gradient-to-r from-indigo-600 to-violet-600 text-white rounded-2xl shadow-lg p-6">
-            <p className="text-xl font-extrabold">🎉 Quest selesai!</p>
+            <p className="text-xl font-extrabold flex items-center gap-2">
+              <PartyPopper className="w-6 h-6" /> Quest selesai!
+            </p>
             {rewards.xpAwarded > 0 && (
-              <p className="mt-1 font-semibold">⚡ +{rewards.xpAwarded} XP</p>
+              <p className="mt-1 font-semibold flex items-center gap-1.5">
+                <Zap className="w-4 h-4 fill-amber-300 text-amber-300" /> +{rewards.xpAwarded} XP
+              </p>
             )}
             {rewards.goldAwarded > 0 && (
-              <p className="mt-1 font-semibold">
-                🪙 +{rewards.goldAwarded} Gold —{' '}
+              <p className="mt-1 font-semibold flex items-center gap-1.5">
+                <Coins className="w-4 h-4 text-amber-300" /> +{rewards.goldAwarded} Gold —{' '}
                 <Link to="/siswa/toko" className="underline">
                   belanjakan di Toko!
                 </Link>
               </p>
             )}
             {rewards.newAchievements.map((a) => (
-              <p key={a.code} className="mt-1">
-                🏅 Achievement terbuka: <span className="font-bold">{a.name}</span>
+              <p key={a.code} className="mt-1 flex items-center gap-1.5">
+                <Medal className="w-4 h-4 text-amber-300" /> Achievement terbuka:{' '}
+                <span className="font-bold">{a.name}</span>
               </p>
             ))}
           </section>

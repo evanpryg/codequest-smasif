@@ -1,3 +1,4 @@
+import { Crown } from 'lucide-react'
 import { useEffect, useMemo, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useAuth } from '../../auth/AuthContext'
@@ -155,7 +156,7 @@ export default function RecapPage() {
                 {chapterQuests.map((q) => (
                   <th key={q.id} className="py-2 px-2 font-semibold text-center whitespace-nowrap">
                     {q.title}
-                    {q.is_boss ? ' 👑' : ''}
+                    {q.is_boss && <Crown className="w-3.5 h-3.5 inline ml-1 -mt-0.5 text-amber-400" />}
                   </th>
                 ))}
               </tr>

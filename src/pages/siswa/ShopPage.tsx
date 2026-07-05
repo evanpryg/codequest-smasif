@@ -1,7 +1,9 @@
+import { Coins, Crown, Image, Scissors, Shirt, Sparkles, type LucideIcon } from 'lucide-react'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../../auth/AuthContext'
 import AvatarView, { type AvatarConfig } from '../../components/AvatarView'
+import Logo from '../../components/Logo'
 import ThemeToggle from '../../components/ThemeToggle'
 
 interface ShopItem {
@@ -13,12 +15,12 @@ interface ShopItem {
   sort_index: number
 }
 
-const CATEGORIES: { key: ShopItem['category']; label: string }[] = [
-  { key: 'background', label: '🖼️ Latar' },
-  { key: 'hair', label: '💇 Rambut' },
-  { key: 'outfit', label: '👕 Baju' },
-  { key: 'hat', label: '🎩 Topi' },
-  { key: 'frame', label: '✨ Bingkai' },
+const CATEGORIES: { key: ShopItem['category']; label: string; Icon: LucideIcon }[] = [
+  { key: 'background', label: 'Latar', Icon: Image },
+  { key: 'hair', label: 'Rambut', Icon: Scissors },
+  { key: 'outfit', label: 'Baju', Icon: Shirt },
+  { key: 'hat', label: 'Topi', Icon: Crown },
+  { key: 'frame', label: 'Bingkai', Icon: Sparkles },
 ]
 
 /**
@@ -69,7 +71,7 @@ export default function ShopPage() {
       }
       setOwnedIds((prev) => new Set(prev).add(item.id))
       if (data && typeof data.gold === 'number') setGold(data.gold)
-      setMessage({ text: `Berhasil membeli ${item.name}! 🎉`, ok: true })
+      setMessage({ text: `Berhasil membeli ${item.name}!`, ok: true })
       await equip(item.category, item.code) // langsung dipakai setelah beli
     } finally {
       setBusyItemId(null)
@@ -94,9 +96,7 @@ export default function ShopPage() {
       <header className="bg-surface border-b border-line">
         <div className="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <Link to="/siswa" className="text-2xl text-game">
-              ⚔️ CodeQuest
-            </Link>
+            <Logo to="/siswa" />
             <span className="text-xs font-bold uppercase tracking-wide bg-fuchsia-100 text-fuchsia-700 rounded-full px-2.5 py-1">
               Toko
             </span>
@@ -116,7 +116,7 @@ export default function ShopPage() {
           <AvatarView config={avatar} size={220} className="mx-auto drop-shadow-lg" />
           <p className="mt-3 text-lg font-extrabold text-ink">{studentName}</p>
           <p className="mt-1 inline-flex items-center gap-1.5 rounded-full bg-amber-100 text-amber-700 font-extrabold px-4 py-1.5">
-            🪙 {gold ?? '…'} Gold
+            <Coins className="w-4 h-4" /> {gold ?? '…'} Gold
           </p>
           <p className="text-xs text-faint mt-3">
             Selesaikan quest untuk mendapat Gold, lalu dandani karaktermu!
@@ -136,7 +136,9 @@ export default function ShopPage() {
                     : 'rounded-full border border-line text-dim text-sm font-semibold px-4 py-2 hover:bg-surface2'
                 }
               >
-                {c.label}
+                <span className="inline-flex items-center gap-1.5">
+                  <c.Icon className="w-4 h-4" /> {c.label}
+                </span>
               </button>
             ))}
           </div>
@@ -220,7 +222,9 @@ function ItemCard({
       <AvatarView config={preview} size={110} className="mx-auto" />
       <p className="mt-2 font-bold text-ink text-sm">{name}</p>
       {!owned && (
-        <p className="text-xs font-extrabold text-amber-600 mt-0.5">🪙 {price}</p>
+        <p className="text-xs font-extrabold text-amber-600 mt-0.5 inline-flex items-center gap-1">
+          <Coins className="w-3.5 h-3.5" /> {price}
+        </p>
       )}
       <div className="mt-2">
         {equipped ? (

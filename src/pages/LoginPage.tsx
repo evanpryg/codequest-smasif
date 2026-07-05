@@ -1,3 +1,4 @@
+import { Swords } from 'lucide-react'
 import { useEffect, useState, type FormEvent } from 'react'
 import { Navigate, useNavigate } from 'react-router-dom'
 import { useAuth } from '../auth/AuthContext'
@@ -34,7 +35,12 @@ export default function LoginPage() {
 
       <div className="relative w-full max-w-md">
         <div className="text-center mb-6">
-          <h1 className="text-5xl text-game">⚔️ CodeQuest</h1>
+          <h1 className="flex items-center justify-center gap-3">
+            <span className="rounded-2xl bg-gradient-to-br from-indigo-500 via-violet-500 to-fuchsia-500 text-white p-3 shadow-lg inline-flex">
+              <Swords className="w-9 h-9" strokeWidth={2.5} />
+            </span>
+            <span className="text-5xl text-game">CodeQuest</span>
+          </h1>
           <p className="text-dim mt-2 font-semibold">
             Pendamping belajar coding di kelas
           </p>

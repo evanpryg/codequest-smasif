@@ -1,3 +1,4 @@
+import { BarChart3, GraduationCap } from 'lucide-react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { useAuth } from '../../auth/AuthContext'
@@ -107,7 +108,9 @@ export default function ClassDetailPage() {
           to={`/guru/kelas/${classId}/live`}
           className="flex-1 min-w-48 rounded-2xl bg-indigo-600 text-white shadow-sm p-5 hover:bg-indigo-700"
         >
-          <p className="text-lg font-bold">🎓 Mulai Mengajar</p>
+          <p className="text-lg font-bold flex items-center gap-2">
+            <GraduationCap className="w-5 h-5" /> Mulai Mengajar
+          </p>
           <p className="text-sm text-indigo-200">
             Live progress, pilih siswa acak, presentasi kode
           </p>
@@ -116,7 +119,9 @@ export default function ClassDetailPage() {
           to={`/guru/kelas/${classId}/rekap`}
           className="flex-1 min-w-48 rounded-2xl bg-surface shadow-sm p-5 border border-line hover:border-indigo-300"
         >
-          <p className="text-lg font-bold text-ink">📊 Rekap Nilai</p>
+          <p className="text-lg font-bold text-ink flex items-center gap-2">
+            <BarChart3 className="w-5 h-5 text-indigo-500" /> Rekap Nilai
+          </p>
           <p className="text-sm text-dim">Status & skor semua siswa per chapter</p>
         </Link>
       </section>

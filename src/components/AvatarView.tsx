@@ -17,7 +17,6 @@ export interface AvatarConfig {
   frame?: string | null
 }
 
-const SKIN = '#fcd7b0'
 const SKIN_SHADE = '#f0b98a'
 
 export default function AvatarView({
@@ -38,7 +37,7 @@ export default function AvatarView({
       viewBox="0 0 200 200"
       width={size}
       height={size}
-      className={className}
+      className={'avatar-anim ' + className}
       role="img"
       aria-label="Karakter avatar"
     >
@@ -63,6 +62,10 @@ export default function AvatarView({
           <stop offset="0%" stopColor="#1e1b4b" />
           <stop offset="100%" stopColor="#312e81" />
         </linearGradient>
+        <radialGradient id={g('skin')} cx="0.38" cy="0.32" r="0.9">
+          <stop offset="0%" stopColor="#ffe4c2" />
+          <stop offset="100%" stopColor="#f5c08c" />
+        </radialGradient>
         <linearGradient id={g('rainbow')} x1="0" y1="0" x2="1" y2="1">
           <stop offset="0%" stopColor="#ef4444" />
           <stop offset="25%" stopColor="#f59e0b" />
@@ -77,10 +80,14 @@ export default function AvatarView({
 
       <g clipPath={`url(#${g('clip')})`}>
         <Background code={config.background} g={g} />
-        <Outfit code={config.outfit} />
-        <Head />
-        <Hair code={config.hair} />
-        <Hat code={config.hat} />
+        {/* bayangan tanah — memberi kesan karakter berpijak */}
+        <ellipse cx="100" cy="196" rx="55" ry="9" fill="#000" opacity="0.14" />
+        <g className="av-char">
+          <Outfit code={config.outfit} />
+          <Head g={g} />
+          <Hair code={config.hair} />
+          <Hat code={config.hat} />
+        </g>
       </g>
       <Frame code={config.frame} g={g} />
     </svg>
@@ -159,21 +166,26 @@ function Background({ code, g }: { code?: string | null; g: (n: string) => strin
 // =============================================================================
 // Kepala & wajah (selalu sama — identitas dasar karakter)
 // =============================================================================
-function Head() {
+function Head({ g }: { g: (n: string) => string }) {
   return (
     <>
       {/* leher */}
       <rect x="90" y="112" width="20" height="14" fill={SKIN_SHADE} />
-      {/* kepala */}
-      <circle cx="100" cy="85" r="40" fill={SKIN} />
-      {/* mata */}
-      <circle cx="85" cy="85" r="5.5" fill="#1f2937" />
-      <circle cx="115" cy="85" r="5.5" fill="#1f2937" />
-      <circle cx="87" cy="83" r="1.8" fill="#ffffff" />
-      <circle cx="117" cy="83" r="1.8" fill="#ffffff" />
+      {/* kepala dengan gradien kulit (highlight kiri-atas) */}
+      <circle cx="100" cy="85" r="40" fill={`url(#${g('skin')})`} />
+      {/* alis tipis */}
+      <path d="M79 74 Q85 71 91 74" fill="none" stroke="#8a5a2b" strokeWidth="2.5" strokeLinecap="round" opacity="0.75" />
+      <path d="M109 74 Q115 71 121 74" fill="none" stroke="#8a5a2b" strokeWidth="2.5" strokeLinecap="round" opacity="0.75" />
+      {/* mata — grup kedip */}
+      <g className="av-eyes">
+        <circle cx="85" cy="85" r="5.5" fill="#1f2937" />
+        <circle cx="115" cy="85" r="5.5" fill="#1f2937" />
+        <circle cx="87" cy="83" r="1.8" fill="#ffffff" />
+        <circle cx="117" cy="83" r="1.8" fill="#ffffff" />
+      </g>
       {/* pipi */}
-      <circle cx="76" cy="97" r="6" fill="#fda4af" opacity="0.6" />
-      <circle cx="124" cy="97" r="6" fill="#fda4af" opacity="0.6" />
+      <circle cx="76" cy="97" r="6" fill="#fda4af" opacity="0.55" />
+      <circle cx="124" cy="97" r="6" fill="#fda4af" opacity="0.55" />
       {/* senyum */}
       <path d="M90 100 Q100 110 110 100" fill="none" stroke="#92400e" strokeWidth="3" strokeLinecap="round" />
     </>
@@ -187,6 +199,10 @@ function Outfit({ code }: { code?: string | null }) {
   const body = (fill: string, extra?: JSX.Element) => (
     <>
       <path d="M55 200 V155 Q55 124 100 124 Q145 124 145 155 V200 Z" fill={fill} />
+      {/* bayangan bawah baju — kesan volume */}
+      <path d="M55 200 V184 Q100 196 145 184 V200 Z" fill="#000" opacity="0.12" />
+      {/* highlight bahu kiri */}
+      <path d="M62 148 Q70 130 92 126 Q76 132 68 152 Z" fill="#fff" opacity="0.18" />
       {/* lengan */}
       <circle cx="57" cy="160" r="12" fill={fill} />
       <circle cx="143" cy="160" r="12" fill={fill} />
@@ -283,10 +299,13 @@ function Hair({ code }: { code?: string | null }) {
     default:
       // Poni pendek default
       return (
-        <path
-          d="M62 78 Q62 48 100 46 Q138 48 138 78 Q128 60 100 60 Q72 60 62 78 Z"
-          fill="#7c4a21"
-        />
+        <>
+          <path
+            d="M62 78 Q62 48 100 46 Q138 48 138 78 Q128 60 100 60 Q72 60 62 78 Z"
+            fill="#7c4a21"
+          />
+          <path d="M74 58 Q86 50 100 50" fill="none" stroke="#a3703b" strokeWidth="3" strokeLinecap="round" opacity="0.8" />
+        </>
       )
   }
 }

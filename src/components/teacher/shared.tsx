@@ -1,6 +1,7 @@
 import { useState, type FormEvent, type ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../../auth/AuthContext'
+import Logo from '../Logo'
 import ThemeToggle from '../ThemeToggle'
 
 /** Gaya bersama halaman guru. */
@@ -33,9 +34,7 @@ export function TeacherShell({ crumbs, children }: { crumbs: Crumb[]; children: 
       <header className="bg-surface border-b border-line">
         <div className="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <Link to="/guru" className="text-2xl text-game">
-              ⚔️ CodeQuest
-            </Link>
+            <Logo to="/guru" />
             <span className="text-xs font-bold uppercase tracking-wide bg-indigo-100 text-indigo-700 rounded-full px-2.5 py-1">
               Guru
             </span>

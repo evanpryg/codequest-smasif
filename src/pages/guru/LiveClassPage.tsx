@@ -1,3 +1,4 @@
+import { Crown, Dices, Hand } from 'lucide-react'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useAuth } from '../../auth/AuthContext'
@@ -216,7 +217,7 @@ export default function LiveClassPage() {
               }
             >
               {q.title}
-              {q.is_boss ? ' 👑' : ''}
+              {q.is_boss && <Crown className="w-4 h-4 inline ml-1 -mt-0.5 text-amber-400" />}
             </button>
           ))}
         </div>
@@ -226,7 +227,9 @@ export default function LiveClassPage() {
             disabled={students.length === 0}
             className="rounded-lg bg-violet-600 text-white font-semibold px-4 py-2 hover:bg-violet-700 disabled:opacity-50"
           >
-            🎲 Pilih Acak
+            <span className="inline-flex items-center gap-2">
+              <Dices className="w-5 h-5" /> Pilih Acak
+            </span>
           </button>
         </div>
       </section>
@@ -261,7 +264,7 @@ export default function LiveClassPage() {
           { label: 'Mengerjakan', value: counts.mengerjakan, cls: 'text-sky-600' },
           { label: 'Sudah submit', value: counts.submit, cls: 'text-indigo-600' },
           { label: 'Belum mulai', value: counts.belum, cls: 'text-dim' },
-          { label: '🙋 Butuh bantuan', value: counts.bantuan, cls: 'text-amber-600' },
+          { label: 'Butuh bantuan', value: counts.bantuan, cls: 'text-amber-600' },
         ].map((c) => (
           <div key={c.label} className="bg-surface rounded-xl shadow-sm p-4 text-center">
             <p className={`text-3xl font-extrabold ${c.cls}`}>{c.value}</p>
@@ -294,7 +297,7 @@ export default function LiveClassPage() {
                   title={online.has(s.id) ? 'online' : 'offline'}
                 />
                 <span className="font-semibold text-ink flex-1 truncate">{s.name}</span>
-                {needHelp && <span title="butuh bantuan">🙋</span>}
+                {needHelp && <Hand className="w-4 h-4 text-amber-500" aria-label="butuh bantuan" />}
               </div>
               <span
                 className={`inline-block mt-2 text-xs font-semibold rounded-full px-2 py-0.5 ${badge.cls}`}

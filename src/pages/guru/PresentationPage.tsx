@@ -154,9 +154,9 @@ export default function PresentationPage() {
           wasAlreadyPassed,
         })
         if (rewards.xpAwarded > 0) msg += ` · +${rewards.xpAwarded} XP untuk ${studentName}`
-        if (rewards.goldAwarded > 0) msg += ` · +${rewards.goldAwarded} 🪙`
+        if (rewards.goldAwarded > 0) msg += ` · +${rewards.goldAwarded} Gold`
         if (rewards.newAchievements.length > 0)
-          msg += ` · 🏅 ${rewards.newAchievements.map((a) => a.name).join(', ')}`
+          msg += ` · Achievement: ${rewards.newAchievements.map((a) => a.name).join(', ')}`
       }
       setReviewMsg(msg)
       await load()
